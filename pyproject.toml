@@ -1,0 +1,31 @@
+[project]
+name = "apg-sphinx-drawio"
+version = "0.1.0"
+description = "Build static Sphinx documentation with editable draw.io architecture diagrams"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "myst-parser==5.1.0",
+    "pydata-sphinx-theme==0.22.0",
+    "sphinx==8.2.3",
+    "sphinxcontrib-mermaid==2.1.1",
+]
+
+[tool.uv]
+exclude-newer = "7 days"
+# PYSEC-2026-4320 (distrusted eMudhra roots) is fixed in certifi 2026.10.19;
+# uv.lock pins 2026.10.23. Allow certifi before the 7-day window; remove this
+# entry after 2026-10-30, when 2026.10.23 is older than seven days.
+exclude-newer-package = { certifi = "2026-10-25T00:00:00Z" }
+package = false
+
+[dependency-groups]
+dev = [
+    "defusedxml==0.7.1",
+    "pytest==9.1.1",
+]
+
+[tool.pytest.ini_options]
+addopts = ["--strict-config", "--strict-markers", "-ra"]
+pythonpath = [".", "src"]
+testpaths = ["tests"]

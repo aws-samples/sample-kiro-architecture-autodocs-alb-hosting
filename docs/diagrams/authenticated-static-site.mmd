@@ -1,0 +1,50 @@
+flowchart LR
+    Viewer((Viewer browser))
+    OIDC["Consumer OIDC provider<br/>User and group assignment"]
+
+    subgraph AWS["AWS Cloud"]
+        Route53["Amazon Route 53"]
+        ACM["AWS Certificate Manager<br/>DNS-validated certificate"]
+        WAF["AWS WAF<br/>Associated WebACL with AWS managed rules"]
+        Alarms["Amazon CloudWatch<br/>Authentication and target alarms"]
+        CloudWatchLogs["Amazon CloudWatch Logs<br/>AWS WAF and Amazon VPC Flow Logs"]
+        Logs["Amazon S3<br/>Load balancer and site access logs"]
+
+        subgraph VPC["Amazon VPC"]
+            ALB["Application Load Balancer<br/>HTTP redirect and OIDC authentication"]
+            Endpoint["Amazon S3 interface endpoint<br/>AWS PrivateLink network interfaces"]
+        end
+
+        Site["Amazon S3<br/>Private versioned REST bucket"]
+    end
+
+    Viewer -->|1a| ALB
+    Viewer -->|1b| ALB
+    WAF -.->|2| ALB
+    ALB <-->|3| OIDC
+    Route53 -.->|4a| ALB
+    ACM -.->|4b| ALB
+    ALB -->|5a| Endpoint
+    ALB -.->|5b| Endpoint
+    Endpoint -->|6| Site
+    ALB -.->|7a| Alarms
+    ALB -.->|7b| Logs
+    WAF -.->|7c| CloudWatchLogs
+    Site -.->|7d| Logs
+    VPC -.->|7e| CloudWatchLogs
+
+    %% Flow key is rendered as an accessible table below the Sphinx figure.
+    %% 1a: Approved viewer HTTP; listener redirects 301 to HTTPS
+    %% 1b: Approved viewer HTTPS to the Application Load Balancer
+    %% 2: Associated AWS WAF WebACL inspects load balancer requests
+    %% 3: OIDC authorization, callback, tokens, and user information
+    %% 4a: Amazon Route 53 public alias
+    %% 4b: AWS Certificate Manager regional TLS certificate
+    %% 5a: Post-OIDC HTTPS content request to endpoint network interfaces
+    %% 5b: HTTP reachability health check; responses 200-499 are healthy
+    %% 6: AWS PrivateLink REST GetObject from the private Amazon S3 bucket
+    %% 7a: Authentication and target metrics and alarms
+    %% 7b: Load balancer access logs
+    %% 7c: Redacted AWS WAF request logs
+    %% 7d: Site-bucket server access logs
+    %% 7e: Amazon VPC Flow Logs for all traffic

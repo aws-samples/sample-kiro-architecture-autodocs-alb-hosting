@@ -1,0 +1,56 @@
+# macOS
+.DS_Store
+._*
+
+# Python
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.python-version
+
+# Sphinx
+docs/_build/
+docs/build/
+docs/generated/
+
+# Node / drawio-desktop
+node_modules/
+
+# Terraform
+.terraform/
+# Reusable modules declare minimum versions; only the infra/ root commits a lock file.
+infra/modules/**/.terraform.lock.hcl
+*.tfvars
+*.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+backend.hcl
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# IDE
+.vscode/
+.idea/
+
+# Kiro session artefacts (keep steering + specs, ignore transient)
+.kiro/cache/
+.kiro/tmp/
+
+# Security scanner output (configuration remains tracked)
+.ash/ash_output/
+
+# Diagram build outputs (rendered PNGs are regenerated from .drawio sources)
+build/
+dist/
+*.log

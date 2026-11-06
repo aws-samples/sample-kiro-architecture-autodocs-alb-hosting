@@ -1,0 +1,5 @@
+bucket       = "replace-with-existing-terraform-state-bucket"
+key          = "sphinx-drawio/docs-hosting/terraform.tfstate"
+region       = "eu-west-1"
+encrypt      = true
+use_lockfile = true

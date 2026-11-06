@@ -1,0 +1,19 @@
+aws_region      = "eu-west-1"
+azs             = ["eu-west-1a", "eu-west-1b"]
+domain_name     = "docs.example.com"
+route53_zone_id = "Z0123456789EXAMPLE"
+
+ingress_cidr_blocks     = ["203.0.113.10/32"]
+ingress_prefix_list_ids = []
+
+oidc_issuer                 = "https://id.example.com"
+oidc_authorization_endpoint = "https://id.example.com/authorize"
+oidc_token_endpoint         = "https://id.example.com/token"
+oidc_user_info_endpoint     = "https://id.example.com/userinfo"
+oidc_client_id              = "replace-with-client-id"
+oidc_scope                  = "openid"
+oidc_session_timeout        = 900
+
+tags = {
+  Owner = "replace-me"
+}
