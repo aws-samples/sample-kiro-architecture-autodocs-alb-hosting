@@ -1,0 +1,179 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/awslabs/automated-security-helper/refs/heads/main/automated_security_helper/schemas/AshConfig.json
+project_name: apg-sphinx-drawio
+global_settings:
+  ignore_paths:
+    - path: .pytest_cache/
+      reason: Generated pytest cache metadata
+    - path: .ash/ash_output/
+      reason: Generated ASH scan reports
+
+  # Central Checkov dispositions. Each entry is scoped to the current Terraform
+  # block and expires so accepted controls cannot become permanent unnoticed.
+  suppressions:
+    - rule_id: CKV_AWS_158
+      path: infra/main.tf
+      line_start: 136
+      line_end: 139
+      reason: CloudWatch Logs uses AWS-managed encryption; a customer KMS key is not required for this demo
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_TF_1
+      path: infra/modules/networking/main.tf
+      line_start: 13
+      line_end: 41
+      reason: Terraform Registry module is pinned to exact release 6.7.3; registry sources do not accept commit hashes
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_TF_1
+      path: infra/modules/networking/main.tf
+      line_start: 47
+      line_end: 62
+      reason: Terraform Registry module is pinned to exact release 6.7.3; registry sources do not accept commit hashes
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_5
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 30
+      line_end: 45
+      reason: Security group is attached to aws_lb.this; Checkov does not resolve the counted reference
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_5
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 47
+      line_end: 62
+      reason: Security group is attached to aws_vpc_endpoint.s3; Checkov does not resolve the counted reference
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_260
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 118
+      line_end: 134
+      reason: Caller-supplied managed prefix lists are explicit approved viewer sources
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_260
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 169
+      line_end: 178
+      reason: Source is the ALB security group rather than an unrestricted IPv4 CIDR
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_28
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 207
+      line_end: 229
+      reason: ALB is attached to aws_wafv2_web_acl_association.this; Checkov does not resolve the module input relationship
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_150
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 207
+      line_end: 229
+      reason: Deletion protection defaults to true and is disabled only when the caller explicitly changes it
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_76
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 207
+      line_end: 229
+      reason: WebACL is caller-owned by the module and its managed rules require deployment-level validation
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_6
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 472
+      line_end: 479
+      reason: Public access block is configured by aws_s3_bucket_public_access_block.site
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_18
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 472
+      line_end: 479
+      reason: Server access logging is configured by aws_s3_bucket_logging.site
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_21
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 472
+      line_end: 479
+      reason: Versioning is enabled by aws_s3_bucket_versioning.site
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_61
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 472
+      line_end: 479
+      reason: Lifecycle retention is configured by aws_s3_bucket_lifecycle_configuration.site
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_62
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 472
+      line_end: 479
+      reason: No site-change event consumer exists in this module
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_145
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 472
+      line_end: 479
+      reason: SSE-S3 avoids KMS grants for endpoint-restricted ALB origin access
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_144
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 472
+      line_end: 479
+      reason: Site artifacts are reproducible and no multi-Region recovery requirement is defined
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_6
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 639
+      line_end: 646
+      reason: Public access block is configured by aws_s3_bucket_public_access_block.logs
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_18
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 639
+      line_end: 646
+      reason: This bucket is the access-log destination and cannot log to itself without recursive logging
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_21
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 639
+      line_end: 646
+      reason: Versioning is enabled by aws_s3_bucket_versioning.logs
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_61
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 639
+      line_end: 646
+      reason: Lifecycle retention is configured by aws_s3_bucket_lifecycle_configuration.logs
+      expiration: "2027-01-31"
+
+    - rule_id: CKV2_AWS_62
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 639
+      line_end: 646
+      reason: No log-processing event consumer exists in this module
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_145
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 639
+      line_end: 646
+      reason: SSE-S3 maintains compatibility with ALB and S3 access log delivery
+      expiration: "2027-01-31"
+
+    - rule_id: CKV_AWS_144
+      path: infra/modules/authenticated-static-site/main.tf
+      line_start: 639
+      line_end: 646
+      reason: No cross-Region log recovery requirement is defined
+      expiration: "2027-01-31"

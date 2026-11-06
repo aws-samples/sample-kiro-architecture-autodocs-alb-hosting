@@ -1,0 +1,47 @@
+.diagram-image-frame {
+  display: inline-block;
+  max-width: 100%;
+  position: relative;
+}
+
+.diagram-image-frame > img {
+  display: block;
+  max-width: 100%;
+}
+
+.diagram-fullscreen-button {
+  background: rgb(255 255 255 / 92%);
+  border: 1px solid #545b64;
+  border-radius: 0.25rem;
+  color: #16191f;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.35rem 0.55rem;
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  z-index: 1;
+}
+
+.diagram-fullscreen-button:hover,
+.diagram-fullscreen-button:focus-visible {
+  background: #ffffff;
+  outline: 2px solid #0972d3;
+  outline-offset: 2px;
+}
+
+.diagram-image-frame:fullscreen {
+  align-items: center;
+  background: #ffffff;
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  padding: 3rem 1rem 1rem;
+  width: 100vw;
+}
+
+.diagram-image-frame:fullscreen > img {
+  max-height: calc(100vh - 4rem);
+  max-width: calc(100vw - 2rem);
+  object-fit: contain;
+}
